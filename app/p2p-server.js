@@ -1,7 +1,7 @@
 const Websocket = require('ws');
 const P2P_PORT = process.env.P2P_PORT || 5001 ;
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [] ;
-//HTTP_PORT=3001 P2P_PORT=5003 PEERS=ws://localhost:5001,ws://localhost:5002 npm run dev
+
 
 class P2pServer {
     constructor(blockchain){
