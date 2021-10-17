@@ -28,6 +28,11 @@ describe('Transactions',() => {
         expect(Transaction.verifyTransaction(transaction)).toBe(true);
     });
 
+    it('invalidates a corrupt transaction',()=>{
+        transaction.outputs[0].amount = 500000;
+        expect(Transaction.verifyTransaction(transaction)).toBe(false);
+    });
+
     describe('if transacting with an amount that exceeds the balance',()=>{
         beforeEach(()=>{
             amount = 50000;
