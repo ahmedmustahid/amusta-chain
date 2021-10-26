@@ -8,6 +8,7 @@ class Miner {
 
     mine(){
         const validTransactions = this.transactionPool.validTransactions();
+
         //include a reward for the miner
         //create a block with valid transaction
         //synchronize chains in the p2p server
