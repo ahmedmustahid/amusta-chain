@@ -40,6 +40,10 @@ app.get('/transactions', (req, res) =>{
     res.json(tp.transactions);
 });
 
+app.get('/balance', (req, res)=>{
+    res.json({balance: wallet.calculateBalance(blockchain)});
+});
+
 app.get('/public-key',(req,res)=>{
     res.json({publicKey: wallet.publicKey });
 });
