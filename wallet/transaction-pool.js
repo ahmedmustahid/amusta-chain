@@ -12,13 +12,15 @@ class TransactionPool {
 
         if (transactionWithId)　{
             this.transactions[this.transactions.indexOf(transactionWithId)] = transaction;
+            console.log(`Updated transactionWithID ${transaction.id}`);
         } else {
             this.transactions.push(transaction);
+            console.log(`Added transactionWithID ${transaction.id}`);
         }
     }
 
     existingTransaction(address) {
-        console.log(`existing transactions are ${this.transactions}`);
+        console.log(`existing transactions are ${JSON.stringify(this.transactions)}`);
         return this.transactions.find(t => t.input.address == address);
     }
 
