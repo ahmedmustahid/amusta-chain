@@ -19,8 +19,8 @@ class Wallet {
         return this.keyPair.sign(dataHash);
     }
 
-    createTransaction(recipient, amount, transactionPool) {
-
+    createTransaction(recipient, amount, blockchain, transactionPool) {
+        this.balance = this.calculateBalance(blockchain);
         if (amount > this.balance) {
             console.log(`Amount: ${amount} exceeds current balance: ${this.balance}`);
             return;
@@ -40,7 +40,7 @@ class Wallet {
     calculateBalance(blockchain){
         let balance = this.balance;
         let transactions = [];
-
+        let startTime = 0;
         blockchain.chain.forEach(block => block.data.
             forEach(transaction => transactions.push(transaction)));
 
@@ -50,10 +50,26 @@ class Wallet {
         if (walletInputTransactions.length > 0) {
             const recentWalletInputTransaction = walletInputTransactions.
                 reduce((prev, current)=> prev.input.timestamp > current.input.timestamp ? prev : current); 
-        }
+            console.log(`recent Transaction ${recentWalletInputTransaction}`);
+            balance = recentWalletInputTransaction.outputs.find(output => output.address === this.publicKey).amount;
 
-        console.log(`recent Transaction ${recentWalletInputTransaction}`);
-        balance = recentWalletInputTransaction.find(output => output.address === this.publicKey).amount;
+            startTime = recentWalletInputTransaction.input.timestamp;
+        }
+        
+        //to obtain the mining reward
+        transactions.forEach(transaction =>{
+            if (transaction.input.timestamp > startTime) {
+
+                transaction.outputs.find(output => {
+                    if (output.address === this.publicKey) {
+                        balance += output.amount;
+                    }
+                });
+            }
+        });
+
+        return balance;
+
     }
     
     static blockchainWallet(){
